@@ -1,0 +1,5 @@
+# devenv
+
+A set of scripts used to set up my environment on a new machine.
+To use, checkout this folder and run ./setup.sh.
+Files will be copied into $HOME.
