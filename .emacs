@@ -19,9 +19,13 @@
 (add-hook 'c-mode-common-hook 'fci-mode)
 (add-hook 'python-mode-hook 'fci-mode)
 
-;delete trailing whitespace
+; delete trailing whitespace
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+; line numbers
+(global-linum-mode t)
+(set-face-foreground 'linum "blue")
+(setq linum-format "%4d \u2502")
 
 ;;;; C++
 
@@ -66,7 +70,7 @@
 
 ;;;; Python
 
-; style checking - requires pyflakes package to be installed
+; style checking - requires pyflakes and pep8 packages to be installed
 (require 'flymake)
 (load-library "flymake-cursor")
 
