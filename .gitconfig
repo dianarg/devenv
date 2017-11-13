@@ -1,5 +1,7 @@
 [core]
 	gitproxy = socks-proxy
 	editor = emacs
+[merge]
+	ff = only
 [color]
 	ui = true

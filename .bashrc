@@ -16,7 +16,6 @@ HISTTIMEFORMAT="%y/%m/%d %T "
 source ~/scripts/git-completion.bash
 
 # custom configuration for this system
-shopt -s nullglob
 for f in $HOME/scripts/bash_config/*; do
 	. "$f"
 done
