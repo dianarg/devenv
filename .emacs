@@ -16,6 +16,8 @@
     ein ;; emacs ipython notebook
     rainbow-delimiters
     fill-column-indicator
+    fireplace
+    magit
     ))
 
 (defun prelude-packages-installed-p ()
@@ -43,8 +45,11 @@
 (load-library "etags-select")
 (require 'etags-select)
 
-
 ;;;; General settings
+
+(setq inhibit-startup-message t)
+(setq initial-scratch-message nil)
+(setq inhibit-startup-screen nil)
 
 ;; Theme
 (load-theme 'manoj-dark t)
@@ -60,8 +65,12 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; line numbers
-(global-linum-mode t)
-(set-face-foreground 'linum "blue")
+(global-linum-mode nil)
+(add-hook 'c-mode-common-hook 'linum-mode)
+(add-hook 'python-mode-hook 'linum-mode)
+(add-hook 'emacs-lisp-mode-hook 'linum-mode)
+(add-hook 'sh-mode-hook 'linum-mode)
+(set-face-foreground 'linum "light blue")
 (setq linum-format "%4d \u2502")
 
 ;; Org-mode
@@ -76,13 +85,16 @@
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
   )
 
+;; fireplace
+(setq fireplace-smoke-on t)
+
 ;;;; C++
 
-; open headers in C++ mode
+;; open headers in C++ mode
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
-; fix for emacs not understanding enum class
-; https://gist.github.com/nschum/2626303
+;; fix for emacs not understanding enum class
+;; https://gist.github.com/nschum/2626303
 (defun inside-class-enum-p (pos)
   "Checks if POS is within the braces of a C++ \"enum class\"."
   (ignore-errors
@@ -112,7 +124,7 @@
 
 (add-hook 'c++-mode-hook 'fix-enum-class)
 
-; configuration for C++ style
+;; configuration for C++ style
 (add-hook 'c-mode-common-hook 'google-set-c-style)
 
 
@@ -148,7 +160,7 @@
 
 
 ;;;; ctags
-; http://mattbriggs.net/blog/2012/03/18/awesome-emacs-plugins-ctags/
+;; http://mattbriggs.net/blog/2012/03/18/awesome-emacs-plugins-ctags/
 (setq path-to-ctags "/usr/bin/ctags")
 (setq tags-table-list '("~/geopm/TAGS"))
 

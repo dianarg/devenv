@@ -1,6 +1,6 @@
 [core]
 	gitproxy = socks-proxy
-	editor = "emacs -nw"
+	editor = "emacs -nw -q"
 [merge]
 	ff = only
 [color]
