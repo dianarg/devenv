@@ -8,6 +8,7 @@
 (require 'google-c-style)
 (load-library "etags-select")
 (require 'etags-select)
+(load-library "rust-mode")
 
 
 ;;;; General settings
@@ -18,6 +19,7 @@
 (setq fci-rule-column 80)
 (add-hook 'c-mode-common-hook 'fci-mode)
 (add-hook 'python-mode-hook 'fci-mode)
+(add-hook 'rust-mode-hook 'fci-mode)
 
 ; delete trailing whitespace
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -26,6 +28,7 @@
 (global-linum-mode t)
 (set-face-foreground 'linum "blue")
 (setq linum-format "%4d \u2502")
+
 
 ;;;; C++
 
@@ -63,7 +66,6 @@
 
 (add-hook 'c++-mode-hook 'fix-enum-class)
 
-
 ; configuration for C++ style
 (add-hook 'c-mode-common-hook 'google-set-c-style)
 
@@ -90,6 +92,10 @@
                '("\\.py\\'" flymake-pycodecheck-init)))
 
 (add-hook 'python-mode-hook 'flymake-mode)
+
+
+;;;; Rust
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 
 
 ;;;; ctags
@@ -119,6 +125,7 @@
   (etags-select-find-tag-at-point))
 
 (global-set-key (kbd "M-.") 'my-find-tag)
+
 
 ;;;; Theme
 
