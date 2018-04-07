@@ -92,7 +92,7 @@
       (backward-sexp 1)
       (or (looking-back "enum\\s-+class\\s-+")
 	  (looking-back "enum\\s-+class\\s-+\\S-+\\s-*:\\s-*")))))
-;      (looking-back "enum[ \t]+class[ \t]+[^}]+"))))
+;;      (looking-back "enum[ \t]+class[ \t]+[^}]+"))))
 
 (defun align-enum-class (langelem)
   (if (inside-class-enum-p (c-langelem-pos langelem))
