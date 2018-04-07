@@ -1,9 +1,43 @@
-; look for libraries in home
+;;;; Packages
+(require 'package)
+(require 'cl) ;; provides loop and return without cl- prefix
+
+(add-to-list 'package-archives '("melpa"
+	     . "http://melpa.org/packages/") t)
+
+(package-initialize)
+
+;; see tutorials here:
+;; https://realpython.com/blog/python/emacs-the-best-python-editor/
+;; batsov.com/articles/2012/02/19/package-management-in-emacs-the-good-the-bad-and-the-ugly
+(defvar prelude-packages
+  '(better-defaults
+    elpy
+    ein ;; emacs ipython notebook
+    rainbow-delimiters
+    fill-column-indicator
+    ))
+
+(defun prelude-packages-installed-p ()
+  (loop for p in prelude-packages
+	when (not (package-installed-p p)) do (return nil)
+	finally (return t)))
+
+(unless (prelude-packages-installed-p)
+  ;; check for new package versions
+  (message "%s" "refreshing package database...")
+  (package-refresh-contents)
+  (message "%s" "done.")
+  ;; install missing packages
+  (dolist (p prelude-packages)
+	     (when (not (package-installed-p p))
+	       (package-install p))))
+(provide 'prelude-packages)
+
+;; look for libraries in home
 (add-to-list 'load-path "~/emacs_libs")
 
-; add libraries
-(load-library "fill-column-indicator")
-(require 'fill-column-indicator)
+;; add libraries
 (load-library "google-c-style")
 (require 'google-c-style)
 (load-library "etags-select")
@@ -12,20 +46,35 @@
 
 ;;;; General settings
 
-; configuration for vertical line at 80 columns
+;; Theme
+(load-theme 'manoj-dark t)
+
+;; configuration for vertical line at 80 columns
 (setq fci-rule-width 1)
 (setq fci-rule-color "red")
 (setq fci-rule-column 80)
 (add-hook 'c-mode-common-hook 'fci-mode)
 (add-hook 'python-mode-hook 'fci-mode)
 
-; delete trailing whitespace
+;; delete trailing whitespace
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-; line numbers
+;; line numbers
 (global-linum-mode t)
 (set-face-foreground 'linum "blue")
 (setq linum-format "%4d \u2502")
+
+;; Org-mode
+(require 'org)
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)
+
+;; rainbow braces
+(when (require 'rainbow-delimiters nil 'noerror)
+  ;; for all programming modes
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+  )
 
 ;;;; C++
 
@@ -63,14 +112,13 @@
 
 (add-hook 'c++-mode-hook 'fix-enum-class)
 
-
 ; configuration for C++ style
 (add-hook 'c-mode-common-hook 'google-set-c-style)
 
 
 ;;;; Python
 
-; style checking - requires pyflakes and pep8 packages to be installed
+;; style checking - requires pyflakes and pep8 packages to be installed
 (require 'flymake)
 (load-library "flymake-cursor")
 
@@ -90,6 +138,13 @@
                '("\\.py\\'" flymake-pycodecheck-init)))
 
 (add-hook 'python-mode-hook 'flymake-mode)
+
+(add-hook 'python-mode-hook 'auto-complete-mode)
+(elpy-enable)
+
+;; use ipython
+(when (executable-find "ipython")
+  (setq python-shell-interpreter "ipython"))
 
 
 ;;;; ctags
@@ -119,19 +174,3 @@
   (etags-select-find-tag-at-point))
 
 (global-set-key (kbd "M-.") 'my-find-tag)
-
-;;;; Theme
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
- '(custom-enabled-themes (quote (manoj-dark))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
