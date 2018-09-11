@@ -25,7 +25,7 @@ TERM=xterm-256color
 source ~/scripts/git-completion.bash
 
 # custom configuration for this system
-for f in $HOME/scripts/bash_config/*; do
+for f in $HOME/scripts/bash_config/*sh; do
 	. "$f"
 done
 
@@ -41,4 +41,4 @@ __git_ps1 () {
 }
 
 # custom prompt
-PS1="\[\e[44;1;31m\]\t \[\e[45;1;33m\] \u@\h \[\e[41;1;32m\] \W \$(__git_ps1) \[\e[44;1;35m\] >\[\e[40;1;37m\] "
+PS1="\[\e[1;31m\]\t \[\e[1;33m\] \u@\h \[\e[1;32m\] \W \$(__git_ps1) \[\e[1;35m\] >\[\e[1;37m\] "
