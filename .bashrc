@@ -18,8 +18,13 @@ PATH=$PATH:$HOME/scripts
 HISTSIZE=100000
 HISTTIMEFORMAT="%y/%m/%d %T "
 
-# make terminal emacs colors look better
-TERM=xterm-256color
+# make terminal emacs colors look better with xterm-256-color
+# on WSL, only xterm-color works
+if grep -q Microsoft /proc/version; then
+    export TERM=xterm-color
+else
+    export TERM=xterm-256color
+fi
 
 # git autocomplete
 source ~/scripts/git-completion.bash
