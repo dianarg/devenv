@@ -51,6 +51,8 @@
 (setq initial-scratch-message nil)
 (setq inhibit-startup-screen nil)
 
+(setq-default indent-tabs-mode nil)
+
 ;; Theme
 (load-theme 'manoj-dark t)
 
@@ -180,7 +182,7 @@
 
 (defun my-find-tag ()
   (interactive)
-  (if (file-exists-p (concat "~/cnr/" "TAGS"))
+  (if (file-exists-p (concat "~/geopm/" "TAGS"))
       (visit-project-tags)
     (build-ctags))
   (etags-select-find-tag-at-point))
