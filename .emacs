@@ -18,6 +18,7 @@
     fill-column-indicator
     fireplace
     magit
+    rust-mode
     ))
 
 (defun prelude-packages-installed-p ()
@@ -62,6 +63,7 @@
 (setq fci-rule-column 80)
 (add-hook 'c-mode-common-hook 'fci-mode)
 (add-hook 'python-mode-hook 'fci-mode)
+(add-hook 'rust-mode-hook 'fci-mode)
 
 ;; delete trailing whitespace
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -159,6 +161,10 @@
 ;; use ipython
 (when (executable-find "ipython")
   (setq python-shell-interpreter "ipython"))
+
+
+;;;; Rust
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 
 
 ;;;; ctags
