@@ -1,6 +1,12 @@
+;; check emacs version
+(when (version< emacs-version "27")
+  (message "emacs version too old; skipping config")
+  (with-current-buffer " *load*"
+    (goto-char (point-max))))
+
 ;;;; Packages
 (require 'package)
-(require 'cl) ;; provides loop and return without cl- prefix
+(require 'cl-lib)
 
 (add-to-list 'package-archives '("melpa"
 	     . "http://melpa.org/packages/") t)
@@ -19,12 +25,14 @@
     fireplace
     magit
     rust-mode
+    flycheck
+    flycheck-pycheckers
     ))
 
 (defun prelude-packages-installed-p ()
-  (loop for p in prelude-packages
-	when (not (package-installed-p p)) do (return nil)
-	finally (return t)))
+  (cl-loop for p in prelude-packages
+	when (not (package-installed-p p)) do (cl-return nil)
+	finally (cl-return t)))
 
 (unless (prelude-packages-installed-p)
   ;; check for new package versions
@@ -45,6 +53,11 @@
 (require 'google-c-style)
 (load-library "etags-select")
 (require 'etags-select)
+
+(global-flycheck-mode 1)
+(with-eval-after-load 'flycheck
+  (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
+
 
 ;;;; General settings
 
@@ -100,7 +113,7 @@
 ;; fix for emacs not understanding enum class
 ;; https://gist.github.com/nschum/2626303
 (defun inside-class-enum-p (pos)
-  "Checks if POS is within the braces of a C++ \"enum class\"."
+  "Check if POS is within the braces of a C++ \"enum class\"."
   (ignore-errors
     (save-excursion
       (goto-char pos)
@@ -133,34 +146,7 @@
 
 
 ;;;; Python
-
-;; style checking - requires pyflakes and pep8 packages to be installed
-(require 'flymake)
-(load-library "flymake-cursor")
-
-;; Script that flymake uses to check code. This script must be
-;; present in the system path.
-(setq pycodechecker "pychecker.sh")
-
-(when (load "flymake" t)
-  (defun flymake-pycodecheck-init ()
-    (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                       'flymake-create-temp-inplace))
-           (local-file (file-relative-name
-                        temp-file
-                        (file-name-directory buffer-file-name))))
-      (list pycodechecker (list local-file))))
-  (add-to-list 'flymake-allowed-file-name-masks
-               '("\\.py\\'" flymake-pycodecheck-init)))
-
-(add-hook 'python-mode-hook 'flymake-mode)
-
-(add-hook 'python-mode-hook 'auto-complete-mode)
 (elpy-enable)
-
-;; use ipython
-(when (executable-find "ipython")
-  (setq python-shell-interpreter "ipython"))
 
 
 ;;;; Rust

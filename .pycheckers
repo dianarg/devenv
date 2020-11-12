@@ -1,0 +1,3 @@
+[DEFAULT]
+checkers = pyflakes,flake8,mypy3
+flake8_config_file=$HOME/.config/flake8
