@@ -29,6 +29,7 @@
     flycheck-pycheckers
     ))
 
+
 (defun prelude-packages-installed-p ()
   (cl-loop for p in prelude-packages
 	when (not (package-installed-p p)) do (cl-return nil)
@@ -68,7 +69,8 @@
 (setq-default indent-tabs-mode nil)
 
 ;; Theme
-(load-theme 'manoj-dark t)
+;; (load-theme 'manoj-dark t)
+(load-theme 'tango-dark t)
 
 ;; configuration for vertical line at 80 columns
 (setq fci-rule-width 1)
