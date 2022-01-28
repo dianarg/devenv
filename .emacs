@@ -9,7 +9,7 @@
 (require 'cl-lib)
 
 (add-to-list 'package-archives '("melpa"
-	     . "http://melpa.org/packages/") t)
+	     . "https://melpa.org/packages/") t)
 
 (package-initialize)
 
